@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasas de Compra/Venta - XYZ Mercado Cambiario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .back-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .note {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            color: #856404;
+        }
+
+        .rates-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .rates-table th,
+        .rates-table td {
+            padding: 18px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .rates-table th {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .rates-table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .rates-table tbody tr:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .rates-table tbody tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        .rates-table tbody tr:hover {
+            background: linear-gradient(45deg, #e8f4f8, #d1ecf1);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos específicos para monedas */
+        .currency-usd {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #27ae60;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .currency-eur {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #e74c3c;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos para valores de compra y venta */
+        .rate-buy {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2980b9;
+            background: linear-gradient(45deg, #ebf3fd, #d6eaff);
+            border-radius: 6px;
+            padding: 8px;
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        .rate-sell {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #c0392b;
+            background: linear-gradient(45deg, #fdf2f2, #fce4ec);
+            border-radius: 6px;
+            padding: 8px;
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        .currency-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .currency-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .currency-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .currency-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .currency-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .update-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: #e8f6ff;
+            border-left: 4px solid #3498db;
+            border-radius: 8px;
+        }
+
+        .update-info p {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .rates-table th,
+            .rates-table td {
+                padding: 12px 8px;
+                font-size: 0.9em;
+            }
+            
+            .currency-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .currency-usd,
+            .currency-eur {
+                font-size: 1.1em;
+            }
+            
+            .rate-buy,
+            .rate-sell {
+                font-size: 1em;
+                min-width: 80px;
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💹 Tasas de Compra/Venta</h1>
+            <p>Consulta las tasas vigentes para cada moneda</p>
+        </div>
+
+        <div class="content">
+            <a href="principal.html" class="back-button">← Volver al Menú Principal</a>
+            
+            <div class="section">
+                <h2>Tasas Vigentes para Compra/Venta</h2>
+                
+                <div class="note">
+                    <strong>📝 Nota:</strong> Títulos en negrilla - Las tasas mostradas son referenciales y pueden variar según el monto de la transacción.
+                </div>
+                
+                <table class="rates-table">
+                    <thead>
+                        <tr>
+                            <th>Moneda</th>
+                            <th>Compra</th>
+                            <th>Venta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="currency-usd">
+                                💵 DÓLAR
+                            </td>
+                            <td>
+                                <span class="rate-buy">$3.800</span>
+                            </td>
+                            <td>
+                                <span class="rate-sell">$4.210</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="currency-eur">
+                                💶 EURO
+                            </td>
+                            <td>
+                                <span class="rate-buy">$4.300</span>
+                            </td>
+                            <td>
+                                <span class="rate-sell">$4.578</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="currency-info">
+                    <div class="currency-card">
+                        <div class="icon">💵</div>
+                        <h3>Dólar Americano</h3>
+                        <p>Moneda de reserva mundial</p>
+                        <p><strong>Spread:</strong> $410</p>
+                    </div>
+                    <div class="currency-card">
+                        <div class="icon">💶</div>
+                        <h3>Euro</h3>
+                        <p>Moneda de la Unión Europea</p>
+                        <p><strong>Spread:</strong> $278</p>
+                    </div>
+                </div>
+
+                <div class="update-info">
+                    <p><strong>🔄 Actualización:</strong> Las tasas se actualizan cada 15 minutos durante horario comercial.</p>
+                    <p><strong>⏰ Horario comercial:</strong> Lunes a Viernes de 8:00 AM a 5:00 PM</p>
+                    <p><strong>📅 Última actualización:</strong> <span id="last-update"></span></p>
+                    <p><strong>💰 Spread:</strong> Diferencia entre precio de compra y venta</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar hora de última actualización al cargar la página
+        window.addEventListener('load', function() {
+            const now = new Date();
+            document.getElementById('last-update').textContent = now.toLocaleString('es-CO');
+        });
+
+        // Función para actualizar tasas automáticamente
+        function updateRates() {
+            console.log('Actualizando tasas...');
+            
+            // Simular pequeñas variaciones en las tasas
+            const buyRates = document.querySelectorAll('.rate-buy');
+            const sellRates = document.querySelectorAll('.rate-sell');
+            
+            // Variaciones pequeñas para simular mercado real
+            const variations = [0.995, 0.998, 1.002, 1.005];
+            
+            buyRates.forEach(rate => {
+                const currentValue = parseFloat(rate.textContent.replace(/[^0-9.]/g, ''));
+                const variation = variations[Math.floor(Math.random() * variations.length)];
+                const newValue = Math.round(currentValue * variation);
+                rate.textContent = $${newValue.toLocaleString()};
+            });
+            
+            sellRates.forEach(rate => {
+                const currentValue = parseFloat(rate.textContent.replace(/[^0-9.]/g, ''));
+                const variation = variations[Math.floor(

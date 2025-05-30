@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores Económicos - XYZ Mercado Cambiario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .back-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .indicators-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .indicators-table th,
+        .indicators-table td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .indicators-table th {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            color: white;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .indicators-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .indicators-table tr:hover {
+            background-color: #e8f4f8;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Estilos específicos para diferentes indicadores */
+        .indicator-dolar {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 1.1em;
+        }
+
+        .indicator-euro {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.1em;
+        }
+
+        .indicator-cafe {
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 1.05em;
+        }
+
+        .indicator-petroleo {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.05em;
+        }
+
+        .indicator-oro {
+            font-weight: bold;
+            color: #f39c12;
+            font-size: 1.1em;
+        }
+
+        .indicator-azucar {
+            font-weight: bold;
+            color: #e67e22;
+            font-size: 1.05em;
+        }
+
+        .indicator-name-dolar {
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .indicator-name-euro {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            color: #34495e;
+        }
+
+        .indicator-name-cafe {
+            font-family: 'Courier New', monospace;
+            color: #8b4513;
+        }
+
+        .indicator-name-petroleo {
+            font-family: 'Arial Black', sans-serif;
+            color: #2c3e50;
+        }
+
+        .indicator-name-oro {
+            font-family: 'Impact', sans-serif;
+            color: #f39c12;
+        }
+
+        .indicator-name-azucar {
+            font-family: 'Trebuchet MS', sans-serif;
+            color: #e67e22;
+        }
+
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .update-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f6ff;
+            border-left: 4px solid #3498db;
+            border-radius: 5px;
+        }
+
+        .update-info p {
+            color: #2c3e50;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .indicators-table th,
+            .indicators-table td {
+                padding: 10px 8px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Indicadores Económicos</h1>
+            <p>Información financiera en tiempo real</p>
+        </div>
+
+        <div class="content">
+            <a href="principal.html" class="back-button">← Volver al Menú Principal</a>
+            
+            <div class="section">
+                <h2>Indicadores Económicos</h2>
+                
+                <div id="loading" class="loading">
+                    Cargando indicadores en tiempo real...
+                </div>
+                
+                <div id="indicators-content" style="display: none;">
+                    <table class="indicators-table">
+                        <thead>
+                            <tr>
+                                <th>Indicador</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="indicator-name-dolar">Dólar TRM</td>
+                                <td class="indicator-dolar">$4.210</td>
+                            </tr>
+                            <tr>
+                                <td class="indicator-name-euro">Euro TRM</td>
+                                <td class="indicator-euro">$4.492</td>
+                            </tr>
+                            <tr>
+                                <td class="indicator-name-cafe">Libra Café</td>
+                                <td class="indicator-cafe">US $3.00</td>
+                            </tr>
+                            <tr>
+                                <td class="indicator-name-petroleo">Barril Petróleo WTI</td>
+                                <td class="indicator-petroleo">US $70.56</td>
+                            </tr>
+                            <tr>
+                                <td class="indicator-name-oro">Onza Oro</td>
+                                <td class="indicator-oro">US $1.759</td>
+                            </tr>
+                            <tr>
+                                <td class="indicator-name-azucar">Libra Azúcar</td>
+                                <td class="indicator-azucar">US $19.77</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="update-info">
+                        <p><strong>💡 Nota:</strong> A cada nombre debe aplicársele estilos de párrafos diferentes. Es decir cada fila diferente, igual los precios.</p>
+                        <p><strong>🔄 Actualización:</strong> Los valores se actualizan cada 30 minutos automáticamente.</p>
+                        <p><strong>📅 Última actualización:</strong> <span id="last-update"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular carga de datos en tiempo real
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('indicators-content').style.display = 'block';
+                
+                // Mostrar hora de última actualización
+                const now = new Date();
+                document.getElementById('last-update').textContent = now.toLocaleString('es-CO');
+            }, 2000);
+        });
+
+        // Función para simular actualización automática de datos
+        function updateIndicators() {
+            // Aquí se podría implementar la llamada a una API real
+            console.log('Actualizando indicadores...');
+            
+            // Simular pequeñas variaciones en los precios
+            const variations = [0.98, 0.99, 1.01, 1.02];
+            const indicators = document.querySelectorAll('.indicators-table tbody tr');
+            
+            indicators.forEach(row => {
+                const valueCell = row.querySelector('td:last-child');
+                if (valueCell && valueCell.textContent.includes('$')) {
+                    const currentValue = parseFloat(valueCell.textContent.replace(/[^0-9.]/g, ''));
+                    const variation = variations[Math.floor(Math.random() * variations.length)];
+                    const newValue = (currentValue * variation).toFixed(2);
+                    
+                    if (valueCell.textContent.includes('US $')) {
+                        valueCell.textContent = US $${newValue};
+                    } else {
+                        valueCell.textContent = $${newValue};
+                    }
+                }
+            });
+            
+            // Actualizar hora
+            const now = new Date();
+            const lastUpdateElement = document.getElementById('last-update');
+            if (lastUpdateElement) {
+                lastUpdateElement.textContent = now.toLocaleString('es-CO');
+            }
+        }
+
+        // Actualizar indicadores cada 30 segundos (en producción sería 30 minutos)
+        setInterval(updateIndicators, 30000);
+    </script>
+</body>
+</html>
